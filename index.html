@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 7 Chemistry 40 MCQ Review - Ms. Theres</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3e8ff;
+            color: #4c1d95;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(147, 51, 234, 0.15);
+            border: 2px solid #e9d5ff;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #7e22ce;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        .header h3 {
+            color: #6b21a8;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .teacher-tag {
+            display: inline-block;
+            background-color: #e9d5ff;
+            color: #6b21a8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .question-card {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(147, 51, 234, 0.1);
+            border: 1px solid #e9d5ff;
+            transition: border-left 0.3s ease;
+        }
+        .question-card h4 {
+            margin-top: 0;
+            color: #6b21a8;
+        }
+        .options {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            padding: 10px 14px;
+            border: 1px solid #e9d5ff;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #faf5ff;
+            transition: all 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #f3e8ff;
+            border-color: #c084fc;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #7e22ce;
+        }
+        .feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        .correct-feedback {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .incorrect-feedback {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+        .btn {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(126, 34, 206, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+            margin: 0 8px;
+        }
+        .btn:hover {
+            background-color: #6b21a8;
+            transform: translateY(-1px);
+        }
+        .btn-reset {
+            background-color: #a855f7;
+        }
+        .btn-reset:hover {
+            background-color: #7e22ce;
+        }
+        #score-board {
+            display: none;
+            background-color: #6b21a8;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(107, 33, 168, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>SMP SWASTA INTEGRITAS BANGSA</h1>
+        <h3>Grade 7 Chemistry - 40 Multiple Choice Review Quiz</h3>
+        <div class="teacher-tag">Teacher: Ms. Theres</div>
+        <p>Both questions and answer choices are automatically shuffled on each visit or reset!</p>
+    </div>
+
+    <div id="score-board"></div>
+
+    <form id="quiz-form">
+        <div id="quiz-container"></div>
+
+        <div class="btn-container">
+            <button type="button" class="btn" onclick="checkAnswers()">Submit Answers</button>
+            <button type="button" class="btn btn-reset" onclick="initQuiz()">Shuffle & Restart</button>
+        </div>
+    </form>
+
+    <script>
+        const rawQuestions = [
+            {
+                q: "Which statement correctly describes the particles in a solid?",
+                options: [
+                    "They are far apart and move freely.",
+                    "They are close together and vibrate about fixed positions.",
+                    "They are close together and move randomly throughout the container.",
+                    "They have no kinetic energy."
+                ],
+                correct: 1,
+                exp: "In solids, particles are tightly packed and vibrate in fixed positions."
+            },
+            {
+                q: "Which property is shared by both liquids and gases?",
+                options: [
+                    "They have a fixed shape.",
+                    "They have a fixed volume.",
+                    "They can flow.",
+                    "They cannot be compressed."
+                ],
+                correct: 2,
+                exp: "Both liquids and gases are fluids, meaning their particles can slide or move past each other and flow."
+            },
+            {
+                q: "A gas can be compressed more easily than a liquid because the particles in a gas...",
+                options: [
+                    "are smaller.",
+                    "have large spaces between them.",
+                    "move more slowly.",
+                    "have stronger forces of attraction."
+                ],
+                correct: 1,
+                exp: "Gases have large empty spaces between particles, allowing them to be pushed closer together under pressure."
+            },
+            {
+                q: "A solid is heated until it becomes a liquid. What happens to its particles?",
+                options: [
+                    "They stop moving.",
+                    "They become closer together and stop vibrating.",
+                    "They gain kinetic energy and can move past one another.",
+                    "They lose kinetic energy and become fixed."
+                ],
+                correct: 2,
+                exp: "Heating adds energy, allowing particles to overcome fixed forces and move past each other."
+            },
+            {
+                q: "Which change of state occurs when a gas changes directly into a solid?",
+                options: ["Melting", "Condensation", "Freezing", "Deposition"],
+                correct: 3,
+                exp: "Deposition is the direct phase transition from a gas to a solid."
+            },
+            {
+                q: "During the melting of a pure substance, the temperature remains constant for a period of time. Why?",
+                options: [
+                    "No heat is being supplied.",
+                    "The particles stop moving.",
+                    "The energy is used to overcome forces of attraction between particles.",
+                    "The particles lose kinetic energy."
+                ],
+                correct: 2,
+                exp: "Thermal energy is spent breaking intermolecular bonds/forces rather than raising kinetic energy (temperature)."
+            },
+            {
+                q: "Which process occurs when a liquid changes into a gas at the surface of the liquid?",
+                options: ["Boiling", "Evaporation", "Condensation", "Freezing"],
+                correct: 1,
+                exp: "Evaporation occurs only at the surface of a liquid below its boiling point."
+            },
+            {
+                q: "Why does evaporation usually cause the temperature of a liquid to decrease?",
+                options: [
+                    "The slowest particles escape from the surface.",
+                    "The particles lose all their energy.",
+                    "The particles with higher kinetic energy escape from the surface.",
+                    "The particles become chemically bonded."
+                ],
+                correct: 2,
+                exp: "High-energy particles leave, lowering the average kinetic energy (and temperature) of the remaining liquid."
+            },
+            {
+                q: "Water boils at 100°C at normal atmospheric pressure. If a substance has a boiling point of 80°C and a melting point of -10°C, what is its state at 90°C?",
+                options: ["Solid", "Liquid", "Gas", "Plasma"],
+                correct: 2,
+                exp: "At 90°C, the temperature is above its boiling point (80°C), so it exists as a gas."
+            },
+            {
+                q: "A gas is heated in a flexible container while its pressure remains constant. What happens to its volume?",
+                options: ["It decreases.", "It remains unchanged.", "It increases.", "It becomes zero."],
+                correct: 2,
+                exp: "Heating gas increases particle kinetic energy and collisions, causing the gas to expand (volume increases)."
+            },
+            {
+                q: "Which statement correctly describes diffusion?",
+                options: [
+                    "Movement of particles from a low concentration to a high concentration.",
+                    "Movement of particles from a high concentration to a low concentration.",
+                    "Movement of particles only in liquids.",
+                    "Movement of particles caused by cooling."
+                ],
+                correct: 1,
+                exp: "Diffusion is the net movement of particles down a concentration gradient."
+            },
+            {
+                q: "Which gas would be expected to diffuse the fastest?",
+                options: ["Hydrogen", "Oxygen", "Carbon dioxide", "Chlorine"],
+                correct: 0,
+                exp: "Hydrogen has the smallest molecular mass, so its particles move and diffuse fastest."
+            },
+            {
+                q: "Which statement best defines an element?",
+                options: [
+                    "A substance made from two or more elements chemically combined.",
+                    "A substance that can be separated by filtration.",
+                    "A pure substance that cannot be broken down into simpler substances by chemical processes.",
+                    "A combination of different substances that are not chemically combined."
+                ],
+                correct: 2,
+                exp: "An element is composed of only one type of atom and cannot be simplified chemically."
+            },
+            {
+                q: "Which of the following is an element?",
+                options: ["Water", "Carbon dioxide", "Oxygen", "Sodium chloride"],
+                correct: 2,
+                exp: "Oxygen consists purely of oxygen atoms, whereas water, carbon dioxide, and sodium chloride are compounds."
+            },
+            {
+                q: "Which pair contains only elements?",
+                options: [
+                    "Oxygen and hydrogen",
+                    "Water and oxygen",
+                    "Carbon dioxide and nitrogen",
+                    "Sodium chloride and hydrogen"
+                ],
+                correct: 0,
+                exp: "Both oxygen (O₂) and hydrogen (H₂) are pure elements."
+            },
+            {
+                q: "What is a compound?",
+                options: [
+                    "Two or more substances physically mixed together.",
+                    "Two or more elements chemically combined in fixed proportions.",
+                    "A substance containing only one type of atom.",
+                    "A substance that can always be separated by filtration."
+                ],
+                correct: 1,
+                exp: "Compounds consist of chemically bonded elements in fixed ratios."
+            },
+            {
+                q: "What does the formula H₂O tell us about one molecule of water?",
+                options: [
+                    "It contains two hydrogen atoms and one oxygen atom.",
+                    "It contains one hydrogen atom and two oxygen atoms.",
+                    "It contains two hydrogen molecules and one oxygen molecule.",
+                    "It contains two elements and two atoms."
+                ],
+                correct: 0,
+                exp: "The subscript '2' applies to Hydrogen, while Oxygen has an implicit subscript of 1."
+            },
+            {
+                q: "Which statement correctly compares a compound with a mixture?",
+                options: [
+                    "Both always contain elements in fixed proportions.",
+                    "A compound can be separated by physical methods, but a mixture cannot.",
+                    "The substances in a mixture are not chemically combined.",
+                    "A mixture always has completely different properties from its components."
+                ],
+                correct: 2,
+                exp: "Mixtures are physically combined, retaining the properties of their constituent parts."
+            },
+            {
+                q: "Which of the following is a mixture?",
+                options: ["Oxygen", "Carbon dioxide", "Water", "Air"],
+                correct: 3,
+                exp: "Air is a mixture of nitrogen, oxygen, argon, carbon dioxide, and other gases."
+            },
+            {
+                q: "A student has a mixture of iron filings and sulfur powder. Which method would be most suitable for separating them?",
+                options: ["Filtration", "Using a magnet", "Evaporation", "Distillation"],
+                correct: 1,
+                exp: "Iron is magnetic, while sulfur powder is not, making magnetic separation ideal."
+            },
+            {
+                q: "What change of state occurs when liquid water changes into ice?",
+                options: ["Melting", "Freezing", "Condensation", "Sublimation"],
+                correct: 1,
+                exp: "Freezing is the process of a liquid turning into a solid."
+            },
+            {
+                q: "A drop of food colouring spreads through a beaker of water without stirring. This process is called:",
+                options: ["Diffusion", "Filtration", "Evaporation", "Condensation"],
+                correct: 0,
+                exp: "Diffusion is the movement of particles spreading evenly through a liquid or gas."
+            },
+            {
+                q: "Fullerene has the chemical formula C₆₀. What does this formula tell us about fullerene?",
+                options: [
+                    "It is a compound made of 60 different elements.",
+                    "It is an element containing 60 carbon atoms bonded in each molecule.",
+                    "It is a mixture of carbon and 60 oxygen atoms.",
+                    "It contains 6 fullerenes and 10 carbon atoms."
+                ],
+                correct: 1,
+                exp: "C₆₀ indicates a molecule composed of 60 carbon atoms (an allotrope of carbon)."
+            },
+            {
+                q: "What is the correct chemical name for the element symbol Ca?",
+                options: ["Carbon", "Calcium", "Copper", "Californium"],
+                correct: 1,
+                exp: "Ca is the chemical symbol for Calcium."
+            },
+            {
+                q: "What is the correct chemical name for the element symbol Fe?",
+                options: ["Fluorine", "Iron", "Francium", "Fermium"],
+                correct: 1,
+                exp: "Fe stands for Ferrum, which is Iron."
+            },
+            {
+                q: "What is the correct chemical name for the element symbol Ne?",
+                options: ["Nickel", "Sodium", "Neon", "Nitrogen"],
+                correct: 2,
+                exp: "Ne is the symbol for Neon."
+            },
+            {
+                q: "What is the correct chemical name for the element symbol Si?",
+                options: ["Silver", "Sodium", "Silicon", "Sulfur"],
+                correct: 2,
+                exp: "Si is the chemical symbol for Silicon."
+            },
+            {
+                q: "To separate a mixture of insoluble iron filings, insoluble sulfur powder, and liquid water, what should be the FIRST step?",
+                options: [
+                    "Use a magnet directly in the liquid",
+                    "Filter the mixture to separate the water from the solids",
+                    "Evaporate the water completely",
+                    "Distill the mixture"
+                ],
+                correct: 1,
+                exp: "Filtering removes the insoluble solids (iron and sulfur) as residue from the liquid water."
+            },
+            {
+                q: "After filtering out water, how can solid iron filings be separated from solid sulfur powder?",
+                options: [
+                    "By boiling",
+                    "By using a magnet to attract iron",
+                    "By adding salt",
+                    "By paper chromatography"
+                ],
+                correct: 1,
+                exp: "A magnet attracts magnetic iron filings, leaving the non-magnetic sulfur powder behind."
+            },
+            {
+                q: "Which state of matter has a fixed volume but takes the shape of its container?",
+                options: ["Solid", "Liquid", "Gas", "Plasma"],
+                correct: 1,
+                exp: "Liquids have fixed volume but no fixed shape."
+            },
+            {
+                q: "What happens to the kinetic energy of particles when a gas is cooled?",
+                options: [
+                    "Kinetic energy increases.",
+                    "Kinetic energy remains constant.",
+                    "Kinetic energy decreases.",
+                    "Kinetic energy becomes infinite."
+                ],
+                correct: 2,
+                exp: "Cooling reduces temperature, which corresponds directly to a decrease in particle kinetic energy."
+            },
+            {
+                q: "Which change of state occurs when gas turns into liquid?",
+                options: ["Sublimation", "Condensation", "Evaporation", "Melting"],
+                correct: 1,
+                exp: "Condensation is the change of state from gas to liquid."
+            },
+            {
+                q: "Which process involves a solid changing directly into a gas without becoming a liquid?",
+                options: ["Sublimation", "Deposition", "Boiling", "Freezing"],
+                correct: 0,
+                exp: "Sublimation is the direct transition from solid to gas."
+            },
+            {
+                q: "Why do gas particles exert pressure on the walls of their container?",
+                options: [
+                    "They attract each other strongly.",
+                    "They constantly collide with the container walls.",
+                    "They fall to the bottom due to gravity.",
+                    "They melt upon touching the walls."
+                ],
+                correct: 1,
+                exp: "Gas pressure is caused by gas particles continually colliding with container walls."
+            },
+            {
+                q: "Which chemical symbol represents Sodium?",
+                options: ["So", "Na", "Sd", "S"],
+                correct: 1,
+                exp: "Na (from Latin 'Natrium') is the chemical symbol for Sodium."
+            },
+            {
+                q: "Which chemical symbol represents Potassium?",
+                options: ["P", "Po", "K", "Pt"],
+                correct: 2,
+                exp: "K (from Latin 'Kalium') is the chemical symbol for Potassium."
+            },
+            {
+                q: "In chromatography, why is the baseline drawn in pencil rather than ink?",
+                options: [
+                    "Pencil dissolves in the solvent.",
+                    "Pencil is insoluble and will not smudge or smudge the chromatogram.",
+                    "Ink is cheaper than pencil.",
+                    "Pencil absorbs the dye better."
+                ],
+                correct: 1,
+                exp: "Pencil lead (graphite) is insoluble and won't mix with the solvent."
+            },
+            {
+                q: "Which technique is best used to obtain pure water from seawater?",
+                options: ["Filtration", "Simple Distillation", "Chromatography", "Magnetism"],
+                correct: 1,
+                exp: "Distillation evaporates water and condenses it into pure liquid water, leaving salt behind."
+            },
+            {
+                q: "When ice melts at 0°C, what happens to the arrangement of its particles?",
+                options: [
+                    "They become highly ordered in fixed lattices.",
+                    "They break free from fixed lattice positions and can move around each other.",
+                    "They move completely far apart and fill the room.",
+                    "They destroy themselves."
+                ],
+                correct: 1,
+                exp: "Melting breaks the fixed lattice structure of ice so particles can move past one another as a liquid."
+            },
+            {
+                q: "A substance consists of two different types of atoms chemically bonded in a 1:2 ratio. How is this substance classified?",
+                options: ["An element", "A compound", "A homogeneous mixture", "A heterogeneous mixture"],
+                correct: 1,
+                exp: "A substance made of different atoms chemically bonded in fixed ratios is a compound."
+            }
+        ];
+
+        let processedQuestions = [];
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function initQuiz() {
+            document.getElementById("score-board").style.display = "none";
+            
+            let shuffledQ = shuffle(JSON.parse(JSON.stringify(rawQuestions)));
+
+            processedQuestions = shuffledQ.map((item) => {
+                let optionsWithIndex = item.options.map((opt, idx) => ({
+                    text: opt,
+                    isCorrect: idx === item.correct
+                }));
+                
+                let shuffledOpts = shuffle(optionsWithIndex);
+                
+                return {
+                    q: item.q,
+                    options: shuffledOpts,
+                    exp: item.exp
+                };
+            });
+
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById("quiz-container");
+            container.innerHTML = "";
+
+            const labels = ["A", "B", "C", "D"];
+
+            processedQuestions.forEach((item, qIdx) => {
+                let card = document.createElement("div");
+                card.className = "question-card";
+                card.id = `q${qIdx}-card`;
+
+                let title = document.createElement("h4");
+                title.innerHTML = `${qIdx + 1}. ${item.q}`;
+                card.appendChild(title);
+
+                let ul = document.createElement("ul");
+                ul.className = "options";
+
+                item.options.forEach((opt, optIdx) => {
+                    let li = document.createElement("li");
+                    let label = document.createElement("label");
+                    
+                    let input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = `q${qIdx}`;
+                    input.value = optIdx;
+
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(` ${labels[optIdx]}. ${opt.text}`));
+                    li.appendChild(label);
+                    ul.appendChild(li);
+                });
+
+                card.appendChild(ul);
+
+                let feedback = document.createElement("div");
+                feedback.className = "feedback";
+                feedback.id = `f${qIdx}`;
+                card.appendChild(feedback);
+
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            let total = processedQuestions.length;
+            const labels = ["A", "B", "C", "D"];
+
+            processedQuestions.forEach((item, qIdx) => {
+                let selectedOption = document.querySelector(`input[name="q${qIdx}"]:checked`);
+                let feedbackDiv = document.getElementById(`f${qIdx}`);
+                let cardDiv = document.getElementById(`q${qIdx}-card`);
+
+                let correctOptIndex = item.options.findIndex(opt => opt.isCorrect);
+                let correctLabel = labels[correctOptIndex];
+                let correctText = item.options[correctOptIndex].text;
+
+                feedbackDiv.style.display = "block";
+
+                if (selectedOption) {
+                    let userIndex = parseInt(selectedOption.value);
+                    if (item.options[userIndex].isCorrect) {
+                        score++;
+                        feedbackDiv.className = "feedback correct-feedback";
+                        feedbackDiv.innerHTML = `&#10004; Correct! ${item.exp}`;
+                        cardDiv.style.borderLeft = "6px solid #2e7d32";
+                    } else {
+                        feedbackDiv.className = "feedback incorrect-feedback";
+                        feedbackDiv.innerHTML = `&#10008; Incorrect. Correct Answer: <strong>${correctLabel}. ${correctText}</strong>.<br><em>${item.exp}</em>`;
+                        cardDiv.style.borderLeft = "6px solid #c62828";
+                    }
+                } else {
+                    feedbackDiv.className = "feedback incorrect-feedback";
+                    feedbackDiv.innerHTML = `&#9888; Not answered. Correct Answer: <strong>${correctLabel}. ${correctText}</strong>.<br><em>${item.exp}</em>`;
+                    cardDiv.style.borderLeft = "6px solid #f57c00";
+                }
+            });
+
+            let scoreBoard = document.getElementById("score-board");
+            scoreBoard.style.display = "block";
+            let percentage = Math.round((score / total) * 100);
+            scoreBoard.innerHTML = `<h2>Your Total Score: ${score} / ${total} (${percentage}%)</h2>`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
