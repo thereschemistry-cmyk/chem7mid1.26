@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 9 Chemistry 40 MCQ Review - Ms. Theres</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f2fe;
+            color: #1e3a8a;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(14, 165, 233, 0.15);
+            border: 2px solid #bae6fd;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #0284c7;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        .header h3 {
+            color: #0369a1;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .teacher-tag {
+            display: inline-block;
+            background-color: #bae6fd;
+            color: #0369a1;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .question-card {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(14, 165, 233, 0.1);
+            border: 1px solid #bae6fd;
+            transition: border-left 0.3s ease;
+        }
+        .question-card h4 {
+            margin-top: 0;
+            color: #0369a1;
+        }
+        .options {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            padding: 10px 14px;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #f0f9ff;
+            transition: all 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #e0f2fe;
+            border-color: #38bdf8;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #0284c7;
+        }
+        .feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        .correct-feedback {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .incorrect-feedback {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+        .btn {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(2, 132, 199, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+            margin: 0 8px;
+        }
+        .btn:hover {
+            background-color: #0369a1;
+            transform: translateY(-1px);
+        }
+        .btn-reset {
+            background-color: #38bdf8;
+        }
+        .btn-reset:hover {
+            background-color: #0284c7;
+        }
+        #score-board {
+            display: none;
+            background-color: #0369a1;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(3, 105, 161, 0.25);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>SMP SWASTA INTEGRITAS BANGSA</h1>
+        <h3>Grade 9 Chemistry - 40 Multiple Choice Review Quiz</h3>
+        <div class="teacher-tag">Teacher: Ms. Theres</div>
+        <p>Both questions and answer choices are automatically shuffled on each visit or reset!</p>
+    </div>
+
+    <div id="score-board"></div>
+
+    <form id="quiz-form">
+        <div id="quiz-container"></div>
+
+        <div class="btn-container">
+            <button type="button" class="btn" onclick="checkAnswers()">Submit Answers</button>
+            <button type="button" class="btn btn-reset" onclick="initQuiz()">Shuffle & Restart</button>
+        </div>
+    </form>
+
+    <script>
+        const rawQuestions = [
+            {
+                q: "Which of the following is a physical property shared by most metals?",
+                options: ["Dull appearance", "Brittle when solid", "Malleable and ductile", "Poor electrical conductor"],
+                correct: 2,
+                exp: "Most metals are malleable and ductile."
+            },
+            {
+                q: "Which metal is a liquid at room temperature, unlike most other metals?",
+                options: ["Iron", "Mercury", "Copper", "Zinc"],
+                correct: 1,
+                exp: "Mercury is liquid at room temperature."
+            },
+            {
+                q: "What is the general word equation for the reaction between a metal and a dilute acid?",
+                options: [
+                    "metal + acid → metal oxide + water",
+                    "metal + acid → salt + hydrogen",
+                    "metal + acid → salt + oxygen",
+                    "metal + acid → metal hydroxide + oxygen"
+                ],
+                correct: 1,
+                exp: "Metal + Acid → Salt + Hydrogen."
+            },
+            {
+                q: "The properties that make copper a suitable material for electrical wiring are:",
+                options: [
+                    "Low density and a very high melting point",
+                    "Good electrical conductivity and ductility",
+                    "Brittleness and a dull appearance",
+                    "Poor thermal conductivity and high reactivity"
+                ],
+                correct: 1,
+                exp: "Copper conducts electricity well and can be drawn into thin wires."
+            },
+            {
+                q: "Which set of properties explains why aluminium is widely used in aircraft construction?",
+                options: [
+                    "Low density, high strength, and good corrosion resistance",
+                    "Very high density and poor electrical conductivity",
+                    "High reactivity and a very low melting point",
+                    "Brittleness and poor thermal conductivity"
+                ],
+                correct: 0,
+                exp: "Aluminium is lightweight, strong, and resists corrosion."
+            },
+            {
+                q: "Brass is an alloy made from which two metals?",
+                options: ["Tin and lead", "Iron and carbon", "Copper and zinc", "Copper and nickel"],
+                correct: 2,
+                exp: "Brass consists of copper and zinc."
+            },
+            {
+                q: "Using the reactivity series (K > Na > Ca > Mg > Al > C > Zn > Fe > H > Cu > Ag > Au), which metal reacts most violently with cold water?",
+                options: ["Magnesium", "Zinc", "Potassium", "Copper"],
+                correct: 2,
+                exp: "Potassium is at the top of the series and reacts explosively with cold water."
+            },
+            {
+                q: "Alloys are generally harder than the pure metals they are made from because:",
+                options: [
+                    "alloys contain no free electrons",
+                    "different-sized atoms disrupt the regular arrangement of metal atoms",
+                    "alloys always have lower melting points than pure metals",
+                    "all the atoms in an alloy are exactly the same size"
+                ],
+                correct: 1,
+                exp: "Differing atomic sizes distort the lattice, preventing layers from sliding easily."
+            },
+            {
+                q: "Magnesium is added to aqueous copper(II) sulfate (Mg + Cu²⁺ → Mg²⁺ + Cu). Which statement is correct?",
+                options: [
+                    "Copper displaces magnesium.",
+                    "Magnesium displaces copper.",
+                    "Magnesium and copper form an alloy.",
+                    "The reaction is a neutralisation reaction."
+                ],
+                correct: 1,
+                exp: "Magnesium is more reactive and displaces copper from solution."
+            },
+            {
+                q: "Which two substances must both be present for iron to rust?",
+                options: ["Oxygen and water", "Heat and salt", "Carbon dioxide and light", "Water and carbon"],
+                correct: 0,
+                exp: "Rusting requires both water (moisture) and oxygen."
+            },
+            {
+                q: "A student observes four changes. Which change is a physical change?",
+                options: ["Iron rusting", "Zinc reacting with hydrochloric acid", "Ice melting", "Wood burning"],
+                correct: 2,
+                exp: "Ice melting is a change of state with no new chemical formed."
+            },
+            {
+                q: "The volume of gas produced during a reaction is measured at regular time intervals. Which expression can be used to determine the average rate of reaction?",
+                options: [
+                    "change in volume of gas ÷ change in time",
+                    "change in time ÷ change in volume of gas",
+                    "volume of gas × time",
+                    "volume of gas ÷ time²"
+                ],
+                correct: 0,
+                exp: "Average rate = Change in volume ÷ Change in time."
+            },
+            {
+                q: "Which of the following is NOT one of the five factors affecting rate of reaction?",
+                options: ["Concentration", "Catalyst", "Colour of the reactants", "Surface area"],
+                correct: 2,
+                exp: "Colour does not affect the rate of reaction."
+            },
+            {
+                q: "In the industrial production of hydrogen gas: CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g) catalyzed by iron(III) oxide (Fe₂O₃), which graph represents the change over time?",
+                options: [
+                    "The curve with Fe₂O₃ is steeper initially and reaches the maximum volume faster",
+                    "The curve with Fe₂O₃ is slower initially than without Fe₂O₃",
+                    "The curve with Fe₂O₃ reaches double the volume of hydrogen",
+                    "The curve with Fe₂O₃ produces less gas overall"
+                ],
+                correct: 0,
+                exp: "A catalyst speeds up the initial rate but does not change the total volume of product."
+            },
+            {
+                q: "Breaking a solid reactant into smaller pieces increases the rate of reaction mainly because:",
+                options: [
+                    "the total surface area available for collisions increases.",
+                    "the activation energy of the reaction increases.",
+                    "the number of reactant particles decreases.",
+                    "the reaction becomes exothermic."
+                ],
+                correct: 0,
+                exp: "Smaller pieces mean larger total surface area for collisions."
+            },
+            {
+                q: "Which statement about a catalyst is correct?",
+                options: [
+                    "It is completely consumed during the reaction.",
+                    "It slows down every reaction.",
+                    "It provides an alternative reaction pathway with lower activation energy.",
+                    "It increases the temperature of the reaction."
+                ],
+                correct: 2,
+                exp: "A catalyst offers an alternative pathway requiring lower activation energy."
+            },
+            {
+                q: "A reaction takes 50 seconds at 25°C and 30 seconds at 45°C. Which statement is supported by the results?",
+                options: [
+                    "Increasing temperature made the reaction slower.",
+                    "Increasing temperature made the reaction faster.",
+                    "Temperature had no effect.",
+                    "The reaction stopped at 45°C."
+                ],
+                correct: 1,
+                exp: "Shorter time indicates a faster rate of reaction at higher temperature."
+            },
+            {
+                q: "Iron reacts with dilute hydrochloric acid to produce iron(II) chloride and hydrogen gas. What type of change occurs in this reaction?",
+                options: ["Physical change", "Chemical change", "Change of state", "Dissolution only"],
+                correct: 1,
+                exp: "Chemical bonds are broken and formed, yielding new products."
+            },
+            {
+                q: "Increasing temperature usually increases the rate of reaction because:",
+                options: [
+                    "particles become heavier",
+                    "particles move faster and collisions are more frequent and energetic",
+                    "particles become smaller",
+                    "there are fewer collisions"
+                ],
+                correct: 1,
+                exp: "Particles gain kinetic energy, causing more frequent and energetic collisions."
+            },
+            {
+                q: "A steel bicycle is left outside in humid weather. After several months, a reddish-brown layer appears on the surface. How would the formation of rust be classified?",
+                options: ["Very fast reaction", "Fast reaction", "Slow reaction", "Instantaneous reaction"],
+                correct: 2,
+                exp: "Rusting occurs over days to months, making it a slow reaction."
+            },
+            {
+                q: "Aluminium is positioned high in the reactivity series, yet aluminium objects do not corrode easily in air. Why?",
+                options: [
+                    "Aluminium is completely non-reactive with oxygen.",
+                    "A tough, protective layer of aluminium oxide forms on its surface.",
+                    "Aluminium reacts only with nitrogen gas in air.",
+                    "Aluminium repels water molecules permanently."
+                ],
+                correct: 1,
+                exp: "A thin protective oxide layer prevents further reaction with air or water."
+            },
+            {
+                q: "What is the correct word equation for the rusting of iron?",
+                options: [
+                    "iron + oxygen + water → hydrated iron(III) oxide",
+                    "iron + carbon dioxide → iron carbonate",
+                    "iron + hydrogen + water → iron hydroxide",
+                    "iron + oxygen → iron nitrate"
+                ],
+                correct: 0,
+                exp: "Iron + Oxygen + Water → Hydrated Iron(III) Oxide (Rust)."
+            },
+            {
+                q: "Ice melting into liquid water is classified as a physical change because:",
+                options: [
+                    "a new chemical substance is created",
+                    "the reaction is irreversible",
+                    "no chemical reaction occurs and the chemical composition remains unchanged",
+                    "gas bubbles are rapidly produced"
+                ],
+                correct: 2,
+                exp: "It is a physical change of state where the molecule remains H₂O."
+            },
+            {
+                q: "Why does a glowing splint rekindle when placed in hydrogen peroxide mixed with raw chicken liver?",
+                options: [
+                    "The liver releases carbon dioxide which ignites the splint.",
+                    "Catalase in the liver speeds up the decomposition of hydrogen peroxide into oxygen gas.",
+                    "The liver absorbs all the moisture from the test tube.",
+                    "Hydrogen peroxide boils and ignites the wood."
+                ],
+                correct: 1,
+                exp: "Catalase acts as an enzyme catalyst producing concentrated oxygen that reignites glowing splints."
+            },
+            {
+                q: "If 54 cm³ of carbon dioxide gas is collected during a 3.0-minute reaction, what is the average rate of reaction?",
+                options: ["18 cm³/min", "162 cm³/min", "0.055 cm³/min", "57 cm³/min"],
+                correct: 0,
+                exp: "54 cm³ ÷ 3 minutes = 18 cm³/min."
+            },
+            {
+                q: "Which element is a non-metal that conducts electricity?",
+                options: ["Graphite (Carbon)", "Sulfur", "Phosphorus", "Iodine"],
+                correct: 0,
+                exp: "Graphite, a form of carbon, contains delocalised electrons and conducts electricity."
+            },
+            {
+                q: "Which metal does NOT react with dilute hydrochloric acid?",
+                options: ["Magnesium", "Zinc", "Copper", "Iron"],
+                correct: 2,
+                exp: "Copper is below hydrogen in the reactivity series and does not react with dilute acids."
+            },
+            {
+                q: "Steel is an alloy composed mainly of iron and which non-metal element?",
+                options: ["Silicon", "Carbon", "Sulfur", "Nitrogen"],
+                correct: 1,
+                exp: "Steel is an alloy of iron and carbon."
+            },
+            {
+                q: "Which method is commonly used to prevent iron structures from rusting by coating them with zinc?",
+                options: ["Galvanising", "Annealing", "Smelting", "Electrolysis"],
+                correct: 0,
+                exp: "Galvanising involves coating iron/steel with a protective layer of zinc."
+            },
+            {
+                q: "In Sacrificial Protection against rust, a piece of metal is attached to iron. Which metal would protect iron?",
+                options: ["Copper", "Silver", "Magnesium", "Gold"],
+                correct: 2,
+                exp: "Magnesium is more reactive than iron, so it corrodes preferentially ('sacrifices' itself)."
+            },
+            {
+                q: "How does increasing the concentration of an acid affect its reaction rate with magnesium ribbon?",
+                options: [
+                    "Decreases rate because particles are spread further apart",
+                    "Has no effect on reaction rate",
+                    "Increases rate because there are more reactant particles per unit volume",
+                    "Stops the reaction immediately"
+                ],
+                correct: 2,
+                exp: "More particles per unit volume lead to more frequent successful collisions."
+            },
+            {
+                q: "Which piece of laboratory equipment is best suited for accurately measuring the volume of gas released during a reaction?",
+                options: ["Measuring cylinder upside down or gas syringe", "Filter funnel", "Bunsen burner", "Thermometer"],
+                correct: 0,
+                exp: "A gas syringe or inverted measuring cylinder measures gas volume accurately."
+            },
+            {
+                q: "What happens to the total mass of reactants and products during a closed chemical reaction?",
+                options: [
+                    "Mass increases",
+                    "Mass decreases",
+                    "Mass remains constant",
+                    "Mass fluctuates randomly"
+                ],
+                correct: 2,
+                exp: "Law of Conservation of Mass: mass is neither created nor destroyed in a chemical reaction."
+            },
+            {
+                q: "Enzymes are best described as:",
+                options: [
+                    "Inorganic catalysts",
+                    "Biological catalysts",
+                    "Chemical reactants that get consumed completely",
+                    "Gaseous products"
+                ],
+                correct: 1,
+                exp: "Enzymes are proteins that function as biological catalysts."
+            },
+            {
+                q: "If a reaction graph becomes flat (horizontal), what does it indicate about the reaction?",
+                options: [
+                    "The reaction speed is at its maximum",
+                    "The reaction has stopped because one or more reactants are used up",
+                    "The temperature is dropping rapidly",
+                    "The catalyst has been completely consumed"
+                ],
+                correct: 1,
+                exp: "A horizontal plateau shows no further product is formed because the reaction has finished."
+            },
+            {
+                q: "Which of the following describes an exothermic chemical change?",
+                options: [
+                    "Ice melting into water",
+                    "Thermal decomposition of limestone",
+                    "Combustion of wood releasing heat",
+                    "Photosynthesis in plants"
+                ],
+                correct: 2,
+                exp: "Combustion releases thermal energy to surroundings (exothermic)."
+            },
+            {
+                q: "Which property is characteristic of non-metals?",
+                options: [
+                    "High electrical conductivity",
+                    "Brittle in solid form",
+                    "High density",
+                    "Malleable"
+                ],
+                correct: 1,
+                exp: "Solid non-metals are generally brittle and crumble easily."
+            },
+            {
+                q: "What is formed when a metal reacts with oxygen gas?",
+                options: ["Metal salt", "Metal hydroxide", "Metal oxide", "Metal hydride"],
+                correct: 2,
+                exp: "Metal + Oxygen → Metal Oxide."
+            },
+            {
+                q: "Why do powder forms of solid reactants react faster than single large lumps of the same mass?",
+                options: [
+                    "Powder has higher temperature",
+                    "Powder has greater total surface area",
+                    "Powder lowers activation energy",
+                    "Powder increases concentration"
+                ],
+                correct: 1,
+                exp: "Powders expose much more total surface area to the reactant particles."
+            },
+            {
+                q: "Which of the following will NOT prevent iron from rusting?",
+                options: [
+                    "Painting the surface",
+                    "Greasing or oiling moving parts",
+                    "Washing with salt water frequently",
+                    "Coating with plastic"
+                ],
+                correct: 2,
+                exp: "Salt water speeds up the rusting process (acts as an electrolyte)."
+            }
+        ];
+
+        let processedQuestions = [];
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function initQuiz() {
+            document.getElementById("score-board").style.display = "none";
+            
+            let shuffledQ = shuffle(JSON.parse(JSON.stringify(rawQuestions)));
+
+            processedQuestions = shuffledQ.map((item) => {
+                let optionsWithIndex = item.options.map((opt, idx) => ({
+                    text: opt,
+                    isCorrect: idx === item.correct
+                }));
+                
+                let shuffledOpts = shuffle(optionsWithIndex);
+                
+                return {
+                    q: item.q,
+                    options: shuffledOpts,
+                    exp: item.exp
+                };
+            });
+
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById("quiz-container");
+            container.innerHTML = "";
+
+            const labels = ["A", "B", "C", "D"];
+
+            processedQuestions.forEach((item, qIdx) => {
+                let card = document.createElement("div");
+                card.className = "question-card";
+                card.id = `q${qIdx}-card`;
+
+                let title = document.createElement("h4");
+                title.innerHTML = `${qIdx + 1}. ${item.q}`;
+                card.appendChild(title);
+
+                let ul = document.createElement("ul");
+                ul.className = "options";
+
+                item.options.forEach((opt, optIdx) => {
+                    let li = document.createElement("li");
+                    let label = document.createElement("label");
+                    
+                    let input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = `q${qIdx}`;
+                    input.value = optIdx;
+
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(` ${labels[optIdx]}. ${opt.text}`));
+                    li.appendChild(label);
+                    ul.appendChild(li);
+                });
+
+                card.appendChild(ul);
+
+                let feedback = document.createElement("div");
+                feedback.className = "feedback";
+                feedback.id = `f${qIdx}`;
+                card.appendChild(feedback);
+
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            let total = processedQuestions.length;
+            const labels = ["A", "B", "C", "D"];
+
+            processedQuestions.forEach((item, qIdx) => {
+                let selectedOption = document.querySelector(`input[name="q${qIdx}"]:checked`);
+                let feedbackDiv = document.getElementById(`f${qIdx}`);
+                let cardDiv = document.getElementById(`q${qIdx}-card`);
+
+                let correctOptIndex = item.options.findIndex(opt => opt.isCorrect);
+                let correctLabel = labels[correctOptIndex];
+                let correctText = item.options[correctOptIndex].text;
+
+                feedbackDiv.style.display = "block";
+
+                if (selectedOption) {
+                    let userIndex = parseInt(selectedOption.value);
+                    if (item.options[userIndex].isCorrect) {
+                        score++;
+                        feedbackDiv.className = "feedback correct-feedback";
+                        feedbackDiv.innerHTML = `&#10004; Correct! ${item.exp}`;
+                        cardDiv.style.borderLeft = "6px solid #2e7d32";
+                    } else {
+                        feedbackDiv.className = "feedback incorrect-feedback";
+                        feedbackDiv.innerHTML = `&#10008; Incorrect. Correct Answer: <strong>${correctLabel}. ${correctText}</strong>.<br><em>${item.exp}</em>`;
+                        cardDiv.style.borderLeft = "6px solid #c62828";
+                    }
+                } else {
+                    feedbackDiv.className = "feedback incorrect-feedback";
+                    feedbackDiv.innerHTML = `&#9888; Not answered. Correct Answer: <strong>${correctLabel}. ${correctText}</strong>.<br><em>${item.exp}</em>`;
+                    cardDiv.style.borderLeft = "6px solid #f57c00";
+                }
+            });
+
+            let scoreBoard = document.getElementById("score-board");
+            scoreBoard.style.display = "block";
+            let percentage = Math.round((score / total) * 100);
+            scoreBoard.innerHTML = `<h2>Your Total Score: ${score} / ${total} (${percentage}%)</h2>`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
